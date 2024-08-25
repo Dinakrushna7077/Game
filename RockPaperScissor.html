@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RockPaperScissor Game</title>
+    <style>
+        * {
+            text-align: center;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .container {
+            height: 40vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .img_Contain {
+            display: flex;
+            flex-direction: column;
+            height: 200px;
+            width: 200px;
+            margin: 50px;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+        }
+
+        .score {
+            display: flex;
+            height: 100px;
+            width: 400px;
+        }
+
+        .score #com_sc {
+            margin-left: 120px;
+            background-color: gray;
+            border: 2px solid rgb(255, 77, 0);
+            border-radius: 10px;
+            padding: 5px;
+            width: 300px;
+        }
+
+        .score #user_sc {
+            background-color: gray;
+            border: 2px solid rgb(255, 77, 0);
+            border-radius: 10px;
+            padding: 5px;
+            width: 300px;
+        }
+
+        #msg {
+            display: inline;
+            background-color: black;
+            color: white;
+            width: 150px;
+            height: 30px;
+            font-size: large;
+            font-weight: 500;
+            padding: 3px 10px 3px 10px;
+            border-radius: 6px;
+        }
+
+        .img_Contain:hover {
+            opacity: 2;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="msg_box">
+        <p id="msg">Play Now</p>
+    </div>
+    <div class="container">
+        <div class="img_Contain" id="rock"><img src="Rock1.jpg" alt="rock" height="180px">
+            Rock
+        </div>
+        <div class="img_Contain" id="paper"><img src="pper.jpg" alt="paper" height="180px">Paper</div>
+        <div class="img_Contain" id="Scissor"> <img src="paper.jpg" alt="Scissor" height="180px">Scissor</div>
+
+    </div>
+    <div class="score">
+        <div id="user_sc">
+            <p id="u_sc">0</p>
+            <hr>
+            Your Score
+        </div>
+        <div id="com_sc">
+            <p id="c_sc">0</p>
+            <hr>
+            Computer Score
+        </div>
+    </div>
+
+    <script>
+        let user = 0;
+        let comp = 0;
+        const message = document.querySelector("#msg");
+        
+        
+        const computerChoice = () => {
+            const choices = ["rock", "paper", "scissor"];
+            let comp_ch = Math.floor(Math.random() * 3);
+            return choices[comp_ch];
+        }
+
+        const game = (user_ch) => {
+            const comp_ch = computerChoice();
+            console.log("You choosed : "+user_ch);
+            console.log("Computer chooded : "+comp_ch);
+            if (comp_ch === user_ch) {
+                drawGame();
+            }
+            else {
+                let userWin = true;
+                if (user_ch === "rock")
+                    userWin = comp_ch === "paper" ? false : true;
+                else if (user_ch === "paper")
+                    userWin = comp_ch === "scissor" ? false : true;
+                else {
+                    userWin = comp_ch === "rock" ? false : true;
+                }
+                winner(userWin);
+            }
+        };
+
+        const winner = (userWin) => {
+
+            console.log(userWin);
+            let userScore = document.querySelector("#u_sc");
+            let compScore = document.querySelector("#c_sc");
+            
+            if (userWin) {
+
+                message.innerText = "You Win...👍";
+                message.style.backgroundColor = "green";
+                userScore.innerText = ++user;
+            }
+            else {
+                message.innerText = "You Lose...😭";
+                message.style.backgroundColor = "darkred";
+                compScore.innerText = ++comp;
+            }
+            winColor(user,comp)
+        }
+        const winColor=(user,comp)=>{
+            let cm=document.querySelector("#com_sc");
+            let us=document.querySelector("#user_sc");
+            if(user>comp)
+            {
+                
+                us.style.backgroundColor="green";
+                cm.style.backgroundColor="gray";
+            }
+            else if(user<comp)
+            {
+                us.style.backgroundColor="gray";
+                cm.style.backgroundColor="green";
+            }
+            else{
+                us.style.backgroundColor="deepskyblue";
+                cm.style.backgroundColor="deepskyblue";
+            }
+        }
+        const drawGame = () => {
+
+            message.innerText = "Game Was Draw 🚫 Play Again...";
+            message.style.backgroundColor = "orangered";
+        }
+        const ch = document.querySelectorAll(".img_Contain");
+        ch.forEach((ch) => {
+            ch.addEventListener("click", () => {
+                const user_ch = ch.getAttribute("id");
+                game(user_ch);
+            });
+        });
+    </script>
+</body>
+</html>
